@@ -1,6 +1,6 @@
-var categoriesArray =[];
+var productArray =[];
 
-function showCategoriesList(array){
+function showListOfProducts(array){
 let htmlContentToAppend = "";
 for(let i = 0; i < array.length; i++){
     let product = array[i];
@@ -14,10 +14,11 @@ for(let i = 0; i < array.length; i++){
             <div class="col">
                 <div class="d-flex w-100 justify-content-between">
                     <h4 class="mb-1">`+ product.name +`</h4>
-                    <small class="text-muted">` + product.productCount + ` artículos</small>
+                    <small class="text-muted">` + product.soldCount + ` artículos vendidos</small>
                 </div>
                 <div>
-                <p>` + product.description + `</p>   
+                <p>` + product.description + `</p>
+                <h4>` + product.currency +" " + product.cost +`</h4> 
                 </div>
             </div>
         </div>
@@ -30,12 +31,12 @@ for(let i = 0; i < array.length; i++){
 //que el documento se encuentra cargado, es decir, se encuentran todos los
 //elementos HTML presentes.
 document.addEventListener("DOMContentLoaded", function (e) {
-        getJSONData(PRODUCTS_URL.then(function(resultObj){
+        getJSONData(PRODUCTS_URL).then(function(resultObj){
             if (resultObj.status === "ok")
             {
-                categoriesArray = resultObj.data;
+                productArray = resultObj.data;
                 //Muestro las categorías ordenadas
-                showCategoriesList(categoriesArray);
+                showListOfProducts(productArray);
             }
-        }));
+        });
 });
