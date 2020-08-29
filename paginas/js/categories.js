@@ -6,29 +6,29 @@ var currentSortCriteria = undefined;
 var minCount = undefined;
 var maxCount = undefined;
 
-function sortCategories(criteria, array){
+function sortCategories(criteria, array){ //funcion general para ordenar
     let result = [];
-    if (criteria === ORDER_ASC_BY_NAME)
+    if (criteria === ORDER_ASC_BY_NAME) //compara si el criterio es igual a "AZ"
     {
-        result = array.sort(function(a, b) {
-            if ( a.name < b.name ){ return -1; }
-            if ( a.name > b.name ){ return 1; }
-            return 0;
+        result = array.sort(function(a, b) { //hace un sort de forma ascendente
+            if ( a.name < b.name ){ return -1; } //a es menor que b
+            if ( a.name > b.name ){ return 1; } //a es mayor que b
+            return 0; //a y b son iguales
         });
-    }else if (criteria === ORDER_DESC_BY_NAME){
-        result = array.sort(function(a, b) {
-            if ( a.name > b.name ){ return -1; }
-            if ( a.name < b.name ){ return 1; }
-            return 0;
+    }else if (criteria === ORDER_DESC_BY_NAME){ //compara si el criterio es igual de "ZA"
+        result = array.sort(function(a, b) { //hace un sort de forma descendete, invierte el orden
+            if ( a.name > b.name ){ return -1; } // a es mayor que b (AB)
+            if ( a.name < b.name ){ return 1; } //a es menos que b (BA)
+            return 0; //a y b son iguales
         });
-    }else if (criteria === ORDER_BY_PROD_COUNT){
+    }else if (criteria === ORDER_BY_PROD_COUNT){ //compara si el criterio es igual a "Cant." Es una lista numerica en forma descendente
         result = array.sort(function(a, b) {
-            let aCount = parseInt(a.productCount);
-            let bCount = parseInt(b.productCount);
-
-            if ( aCount > bCount ){ return -1; }
-            if ( aCount < bCount ){ return 1; }
-            return 0;
+            let aCount = parseInt(a.productCount); //pasa el String a numero con parseInt para que ordene bien y los guarda en una variable
+            let bCount = parseInt(b.productCount); //pasa el String a numero con parseInt para que ordene bien y los guarda en una variable
+            //orden descendente
+            if ( aCount > bCount ){ return -1; } //a es mayor que b (AB)
+            if ( aCount < bCount ){ return 1; } //a es menor que b (BA)
+            return 0; //a y b son iguales
         });
     }
 
