@@ -2,6 +2,7 @@
 //que el documento se encuentra cargado, es decir, se encuentran todos los
 //elementos HTML presentes.
 var productList = {};
+const maxRating = 5;
 
 function showImagesGallery(array) {
 
@@ -22,35 +23,68 @@ function showImagesGallery(array) {
     }
 }
 
-/*function showRelatedProducts(relatedProductsArray) {
-    getJSONData(PRODUCT_INFO_LIST).then(function (resultObj) {
-        if (resultObj.status === "ok") {
-            productList = resultObj.data;
+function showProductComments(array){
+    let htmlContentToAppend = "";
 
-            let htmlRelatedproducts = "";
+    for(let i=0;i<array.length;i++){
+        let comments = array[i];
+        let score = comments.score;
+        let stars = "";
 
-            for (let i = 0; i < relatedProductsArray.length; i++) {
-                let relatedProductPosition = relatedProductsArray[i];
-                let relatedproduct = productList[relatedProductPosition];
-
-                htmlRelatedproducts += `
-                <div class= "col-lg-3 col-md-4 col-6 border">
-                    <div id="relatedproductImg" class= "row">
-                        <img class="img-fluid p-2" src="`+relatedproduct.images[0]+`">                                              
-                    </div>                   
-                    <div "relatedproductInfo" class= "row p-2">
-                    <p>`+ relatedproduct.name + `</p> 
-                    <p>`+ relatedproduct.description + `</p>
-                    </div>
-                    <div class= "row p-2">
-                    <a href="products-info.html">Ver</a>
-                    </div>                     
-                </div>`
+        for (let u = 1; u <= maxRating; u++) {
+            if (u <= score) {
+                stars += '<i class="fa fa-star checked"></i>';
+            } else {
+                stars += '<i class="fa fa-star"></i>';
             }
-            document.getElementById("relatedroductsContainer").innerHTML = htmlRelatedproducts;
+        }
+
+        htmlContentToAppend +=`
+        <div >
+            <div class="d-block mb-4 h-100">
+                <h4>${comments.user}${" "}${stars}</h4>
+                <p>${comments.dateTime}</p>
+                <p>${comments.description}</p>
+            </div>
+        </div>
+        `
+        document.getElementById("productComments").innerHTML = htmlContentToAppend;
+    }
+}
+
+function relatedProducts(relatedProductsarray){
+    getJSONData(PRODUCT_INFO_URL).then(function(resultObj){
+    let html="";
+        if(resultObj.status === "ok"){
+            array = resultObj.data;
+            for(let i=0;i<relatedProductsarray.length;i++){
+                let related = relatedProductsarray[i];
+                html +=`
+                <div class= "col-lg-3 col-md-4 col-6">
+                <div class="row">
+                    <img class="img fluid img-thumbnail" src"`+related.images[0]+`">
+                </div>
+                <div  class="row">
+                <div>`+related.name+`</div>
+                <p></p>
+                </div>
+                </div>
+                `
+            }
+            document.getElementById("relatedProductsContainer").innerHTML =html;
         }
     })
-}*/
+}
+
+document.addEventListener("DOMContentLoaded", function(e){
+    getJSONData(PRODUCT_INFO_COMMENTS_URL).then(function(resultObj) {
+        if(resultObj.status === "ok"){
+            productscomments = resultObj.data;
+            showProductComments(productscomments);
+            commentRating(productscomments);
+        }
+    })
+});
 
 document.addEventListener("DOMContentLoaded", function(e){
     getJSONData(PRODUCT_INFO_URL).then(function (resultObj) {
@@ -71,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function(e){
             productCostHTML.innerHTML = product.cost;
             //Muestro las imagenes en forma de galería
             showImagesGallery(product.images);
-            //showRelatedGames(product.relatedProducts);
+            relatedProducts(product.relatedProducts);
         }
     })
 });
