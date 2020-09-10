@@ -53,21 +53,25 @@ function showProductComments(array){
 }
 
 function relatedProducts(relatedProductsarray){
-    getJSONData(PRODUCT_INFO_URL).then(function(resultObj){
-    let html="";
+    getJSONData(PRODUCTS_URL).then(function(resultObj){
+   
         if(resultObj.status === "ok"){
             array = resultObj.data;
+
+            let html="";
+
             for(let i=0;i<relatedProductsarray.length;i++){
-                let related = relatedProductsarray[i];
+                let relatedPosition = relatedProductsarray[i];
+                let relacionados = array[relatedPosition];
                 html +=`
                 <div class= "col-lg-3 col-md-4 col-6">
-                <div class="row">
-                    <img class="img fluid img-thumbnail" src"`+related.images[0]+`">
-                </div>
-                <div  class="row">
-                <div>`+related.name+`</div>
-                <p></p>
-                </div>
+                    <div class="row">
+                        <img class="img-fluid p-2" src="${relacionados.imgSrc}">
+                    </div>
+                    <div  class="row p-2">
+                        <h4>`+relacionados.name+`</h4>
+                        <p>${relacionados.description}</p>
+                    </div>
                 </div>
                 `
             }
